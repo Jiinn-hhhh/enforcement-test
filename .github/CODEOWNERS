@@ -1,0 +1,11 @@
+# CODEOWNERS for enforcement test
+# All CI/CD config requires owner review
+.github/                    @Jiinn-hhhh
+deploy/                     @Jiinn-hhhh
+
+# Security-sensitive files
+CLAUDE.md                   @Jiinn-hhhh
+.claude/                    @Jiinn-hhhh
+
+# Default fallback
+*                           @Jiinn-hhhh
