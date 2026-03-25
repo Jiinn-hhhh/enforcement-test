@@ -1,0 +1,45 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/protect-secrets.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/protect-secrets.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/branch-guard.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/commit-msg-check.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/infra-guard.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/infra-guard.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

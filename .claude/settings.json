@@ -1,4 +1,16 @@
 {
+  "_comment": "sori monorepo - AI agent enforcement settings. Complete replacement for .claude/settings.json. Deny rules override allow rules (first match wins in deny->ask->allow order).",
+  "_deny_map": {
+    "S-01": "Read .env files blocked (previously only Bash cat was blocked)",
+    "S-02": "Read secrets/, key, pem files blocked",
+    "I-02": "IaC/deploy directory write-protected via Edit and Write tools",
+    "I-03": "CI pipeline (.github/workflows/) write-protected",
+    "I-04": "Claude settings (.claude/) write-protected from self-modification",
+    "B-01": "prod direct push blocked",
+    "B-02": "stg direct push blocked",
+    "B-03": "force push blocked (all variants)",
+    "B-04": "--no-verify pre-commit bypass blocked"
+  },
   "permissions": {
     "allow": [
       "Bash(npm:*)",
