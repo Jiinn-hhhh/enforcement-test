@@ -1,2 +1,56 @@
-.github/ @Jiinn-hhhh
-deploy/ @Jiinn-hhhh
+# CODEOWNERS for sori monorepo
+# Enforces: I-02, I-03, S-01 (with required code owner review)
+#
+# Syntax: path @owner
+# Requires branch protection "Require review from Code Owners" to be enforced.
+#
+# Rules are evaluated bottom-up: the last matching pattern wins.
+# Ensure more specific paths appear after broader ones.
+
+# --- Default fallback: all files require at least one team lead review ---
+*                           @sori-org/team-leads
+
+# --- Infrastructure & CI ---
+# All CI/CD config and GitHub settings require ops review
+.github/                    @sori-org/ops-team
+deploy/                     @sori-org/infra-team
+scripts/                    @sori-org/ops-team
+
+# --- Security-sensitive files ---
+# AI agent configuration must be reviewed by security
+CLAUDE.md                   @sori-org/security-team
+.claude/                    @sori-org/security-team
+AGENTS.md                   @sori-org/security-team
+.codex/                     @sori-org/security-team
+
+# Env file patterns (belt-and-suspenders; .gitignore should also block these)
+*.env                       @sori-org/security-team
+*.env.*                     @sori-org/security-team
+.env                        @sori-org/security-team
+.env.local                  @sori-org/security-team
+.env.production             @sori-org/security-team
+.env.staging                @sori-org/security-team
+
+# --- ML models and training ---
+ml/                         @sori-org/ml-team
+
+# --- TypeScript score-editor (cross-platform package) ---
+packages/score-editor/      @sori-org/frontend-team
+
+# --- API services (all backends) ---
+apps/api/                   @sori-org/backend-team
+apps/api/ai-midi/           @sori-org/backend-team
+apps/api/ai-midi-inference/ @sori-org/backend-team @sori-org/ml-team
+apps/api/ai-midi-site/      @sori-org/backend-team
+
+# --- Web apps ---
+apps/web/                   @sori-org/frontend-team
+apps/web/ai-midi/           @sori-org/frontend-team
+apps/web/ai-midi-demo/      @sori-org/frontend-team
+
+# --- Native apps ---
+apps/native/                @sori-org/mobile-team
+apps/native/score-editor/   @sori-org/mobile-team @sori-org/frontend-team
+
+# --- Services ---
+services/                   @sori-org/backend-team @sori-org/ops-team
