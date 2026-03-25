@@ -43,9 +43,19 @@ if [[ -z "$COMMIT_MSG" ]]; then
   fi
 fi
 
-# If still no message (heredoc, interactive), allow through — pre-commit commitizen
-# hook and CI enforcement-check are the backstops for these cases.
+# If still no message (heredoc, interactive, or multiline that sed couldn't parse),
+# do a raw-command fallback check for obvious violations before allowing through.
+# Pre-commit commitizen hook and CI enforcement-check are the backstops for edge cases.
 if [[ -z "$COMMIT_MSG" ]]; then
+  # Fallback: check raw command for forbidden patterns (defense-in-depth)
+  if echo "$COMMAND" | grep -qiE 'co-authored-by:'; then
+    echo "BLOCKED: Commit message must not contain 'Co-Authored-By:' attribution. Disclose AI use with '(w/ Claude)' in the message instead. [F-03]" >&2
+    exit 2
+  fi
+  if echo "$COMMAND" | grep -qiE '(Generated with Claude|Generated with \[Claude)'; then
+    echo "BLOCKED: Commit message must not contain 'Generated with Claude' boilerplate. Disclose AI use with '(w/ Claude)' in the subject line instead. [F-03]" >&2
+    exit 2
+  fi
   exit 0
 fi
 
