@@ -43,14 +43,20 @@ if [[ "$TOOL_NAME" == "Write" || "$TOOL_NAME" == "Edit" || "$TOOL_NAME" == "Mult
     block_file "$FILE_PATH"
   fi
 
-  # docker-compose.yml and docker-compose.*.yml
+  # docker-compose.yml and docker-compose.*.yml — only on protected branches
   if echo "$FILE_PATH_NORM" | grep -qE '(^|/)docker-compose(\.[^/]+)?\.yml$'; then
-    block_file "$FILE_PATH"
+    CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
+    if echo "$CURRENT_BRANCH" | grep -qE '^(prod|stg|staging|main)$'; then
+      block_file "$FILE_PATH"
+    fi
   fi
 
-  # Dockerfile and Dockerfile.*
+  # Dockerfile and Dockerfile.* — only on protected branches
   if echo "$FILE_PATH_NORM" | grep -qE '(^|/)Dockerfile(\.[^/]+)?$'; then
-    block_file "$FILE_PATH"
+    CURRENT_BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
+    if echo "$CURRENT_BRANCH" | grep -qE '^(prod|stg|staging|main)$'; then
+      block_file "$FILE_PATH"
+    fi
   fi
 
   # .claude/settings.json and .claude/settings.local.json
